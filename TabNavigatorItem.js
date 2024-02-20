@@ -1,13 +1,10 @@
-'use strict';
+"use strict";
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import {
-  Text,
-  View,
-} from 'react-native';
+import React from "react";
+import PropTypes from "prop-types";
+import { Text, View } from "react-native";
 
-import ViewPropTypes from './config/ViewPropTypes';
+import ViewPropTypes from "./config/ViewPropTypes";
 
 export default class TabNavigatorItem extends React.Component {
   static propTypes = {
@@ -16,16 +13,15 @@ export default class TabNavigatorItem extends React.Component {
     badgeText: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     renderBadge: PropTypes.func,
     title: PropTypes.string,
-    titleStyle: Text.propTypes?.style,
-    selectedTitleStyle: Text.propTypes?.style,
+    titleStyle: ViewPropTypes.style,
+    selectedTitleStyle: ViewPropTypes.style,
     tabStyle: ViewPropTypes.style,
     selected: PropTypes.bool,
     onPress: PropTypes.func,
     allowFontScaling: PropTypes.bool,
   };
 
-  static defaultProps = {
-  };
+  static defaultProps = {};
 
   render() {
     let child = React.Children.only(this.props.children);

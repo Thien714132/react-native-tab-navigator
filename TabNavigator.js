@@ -1,28 +1,25 @@
-'use strict';
+"use strict";
 
-import { Set } from 'immutable';
-import React from 'react';
-import PropTypes from 'prop-types';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Set } from "immutable";
+import React from "react";
+import PropTypes, { any } from "prop-types";
+import { StyleSheet, View } from "react-native";
 
-import Badge from './Badge';
-import Layout from './Layout';
-import StaticContainer from './StaticContainer';
-import Tab from './Tab';
-import TabBar from './TabBar';
-import TabNavigatorItem from './TabNavigatorItem';
-import ViewPropTypes from './config/ViewPropTypes';
+import Badge from "./Badge";
+import Layout from "./Layout";
+import StaticContainer from "./StaticContainer";
+import Tab from "./Tab";
+import TabBar from "./TabBar";
+import TabNavigatorItem from "./TabNavigatorItem";
+import ViewPropTypes from "./config/ViewPropTypes";
 
 export default class TabNavigator extends React.Component {
   static propTypes = {
     ...ViewPropTypes,
     sceneStyle: ViewPropTypes.style,
-    tabBarStyle: TabBar.propTypes.style,
+    tabBarStyle: ViewPropTypes.style.style,
     tabBarShadowStyle: TabBar.propTypes.shadowStyle,
-    hidesTabTouch: PropTypes.bool
+    hidesTabTouch: PropTypes.bool,
   };
 
   constructor(props, context) {
@@ -34,18 +31,18 @@ export default class TabNavigator extends React.Component {
     this._renderTab = this._renderTab.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let { renderedSceneKeys } = this.state;
     this.setState({
       renderedSceneKeys: this._updateRenderedSceneKeys(
         nextProps.children,
-        renderedSceneKeys,
+        renderedSceneKeys
       ),
     });
   }
 
   _getSceneKey(item, index): string {
-    return `scene-${(item.key !== null) ? item.key : index}`;
+    return `scene-${item.key !== null ? item.key : index}`;
   }
 
   _updateRenderedSceneKeys(children, oldSceneKeys = Set()): Set {
@@ -63,7 +60,14 @@ export default class TabNavigator extends React.Component {
   }
 
   render() {
-    let { style, children, tabBarStyle, tabBarShadowStyle, sceneStyle, ...props } = this.props;
+    let {
+      style,
+      children,
+      tabBarStyle,
+      tabBarShadowStyle,
+      sceneStyle,
+      ...props
+    } = this.props;
     let scenes = [];
 
     React.Children.forEach(children, (item, index) => {
@@ -76,10 +80,11 @@ export default class TabNavigator extends React.Component {
       }
 
       let { selected } = item.props;
-      let scene =
+      let scene = (
         <SceneContainer key={sceneKey} selected={selected} style={sceneStyle}>
           {item}
-        </SceneContainer>;
+        </SceneContainer>
+      );
 
       scenes.push(scene);
     });
@@ -126,15 +131,15 @@ export default class TabNavigator extends React.Component {
         allowFontScaling={item.props.allowFontScaling}
         titleStyle={[
           item.props.titleStyle,
-          item.props.selected ? [
-            styles.defaultSelectedTitle,
-            item.props.selectedTitleStyle,
-          ] : null,
+          item.props.selected
+            ? [styles.defaultSelectedTitle, item.props.selectedTitleStyle]
+            : null,
         ]}
         badge={badge}
         onPress={item.props.onPress}
         hidesTabTouch={this.props.hidesTabTouch}
-        style={item.props.tabStyle}>
+        style={item.props.tabStyle}
+      >
         {icon}
       </Tab>
     );
@@ -152,13 +157,14 @@ class SceneContainer extends React.Component {
     return (
       <View
         {...props}
-        pointerEvents={selected ? 'auto' : 'none'}
+        pointerEvents={selected ? "auto" : "none"}
         removeClippedSubviews={!selected}
         style={[
           styles.sceneContainer,
           selected ? null : styles.hiddenSceneContainer,
           props.style,
-        ]}>
+        ]}
+      >
         <StaticContainer shouldUpdate={selected}>
           {this.props.children}
         </StaticContainer>
@@ -172,7 +178,7 @@ let styles = StyleSheet.create({
     flex: 1,
   },
   sceneContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
@@ -180,14 +186,14 @@ let styles = StyleSheet.create({
     paddingBottom: Layout.tabBarHeight,
   },
   hiddenSceneContainer: {
-    overflow: 'hidden',
+    overflow: "hidden",
     opacity: 0,
   },
   defaultSelectedTitle: {
-    color: 'rgb(0, 122, 255)',
+    color: "rgb(0, 122, 255)",
   },
   defaultSelectedIcon: {
-    tintColor: 'rgb(0, 122, 255)',
+    tintColor: "rgb(0, 122, 255)",
   },
 });
 

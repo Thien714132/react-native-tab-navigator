@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
   StyleSheet,
   Text,
@@ -9,16 +9,16 @@ import {
   TouchableNativeFeedback,
   Platform,
   View,
-} from 'react-native';
+} from "react-native";
 
-import ViewPropTypes from './config/ViewPropTypes';
-import Layout from './Layout';
+import ViewPropTypes from "./config/ViewPropTypes";
+import Layout from "./Layout";
 
 export default class Tab extends React.Component {
   static propTypes = {
-    testID : PropTypes.string,
+    testID: PropTypes.string,
     title: PropTypes.string,
-    titleStyle: Text.propTypes?.style,
+    titleStyle: ViewPropTypes.style,
     badge: PropTypes.element,
     onPress: PropTypes.func,
     hidesTabTouch: PropTypes.bool,
@@ -40,13 +40,15 @@ export default class Tab extends React.Component {
     }
 
     if (title) {
-      title =
+      title = (
         <Text
           numberOfLines={1}
           allowFontScaling={!!this.props.allowFontScaling}
-          style={[styles.title, this.props.titleStyle]}>
+          style={[styles.title, this.props.titleStyle]}
+        >
           {title}
-        </Text>;
+        </Text>
+      );
     }
 
     if (badge) {
@@ -62,14 +64,15 @@ export default class Tab extends React.Component {
     ];
     if (
       !this.props.hidesTabTouch &&
-      Platform.OS === 'android' &&
+      Platform.OS === "android" &&
       Platform.Version >= 21
     ) {
       return (
         <TouchableNativeFeedback
           testID={this.props.testID}
           background={TouchableNativeFeedback.Ripple(undefined, true)}
-          onPress={this._handlePress}>
+          onPress={this._handlePress}
+        >
           <View style={tabStyle}>
             <View>
               {icon}
@@ -85,7 +88,8 @@ export default class Tab extends React.Component {
         testID={this.props.testID}
         activeOpacity={this.props.hidesTabTouch ? 1.0 : 0.8}
         onPress={this._handlePress}
-        style={tabStyle}>
+        style={tabStyle}
+      >
         <View>
           {icon}
           {badge}
@@ -104,24 +108,24 @@ export default class Tab extends React.Component {
 
 let styles = StyleSheet.create({
   badge: {
-    position: 'absolute',
+    position: "absolute",
     top: -6,
     right: -10,
   },
   container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   untitledContainer: {
     paddingBottom: 13,
   },
   title: {
-    color: '#929292',
+    color: "#929292",
     fontSize: 10,
-    textAlign: 'center',
-    alignSelf: 'stretch',
+    textAlign: "center",
+    alignSelf: "stretch",
     marginTop: 4,
     marginBottom: 1 + Layout.pixel,
   },
